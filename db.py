@@ -2,18 +2,20 @@ import mysql.connector
 
 class Connector(object):
   #Create a constructor
-  def __init__(self,database:str,host:str,user:str,password:str):
+  def __init__(self,database:str,host:str,user:str,password:str,port:int):
     self.database = database
     self.host = host
     self.user = user
     self.password = password
+    self.port = port
   #Create a method to connect to the database
   def connect(self):
     self.conn = mysql.connector.connect(
       host = self.host,
       user = self.user,
       password = self.password,
-      database = self.database
+      database = self.database,
+      port = self.port
     )
     self.cursor = self.conn.cursor()
     if(self.cursor):
@@ -33,8 +35,8 @@ class Connector(object):
     if(False == self.cursor):
       print("Closed successfully!")
   
-""" con = Connector("paises","localhost","root","micolash12")
-con.connect()
-con.execute("select * from pais limit 4")
-print(con.fetchall())
-print(con.close()) """
+conn = mysql.connector.connect(host="localhost",
+                                database="bookstore",
+                                user="root",
+                                password="example",
+                                port=3306)
