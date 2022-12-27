@@ -9,7 +9,7 @@ app = Flask(__name__)
    "APL" : {"name": "APL", "publication_year": 1962, "contribution": "array processing"},
 }
  """
-conn = Connector("bookstore","localhost","root","example")
+conn = Connector("bookstore","localhost","root","micolash12")
 conn.connect()
 @app.get('/countries')
 def countries():
