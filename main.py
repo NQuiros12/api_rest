@@ -1,6 +1,18 @@
 #uvicorn main:app --reload
 from fastapi import FastAPI
 from config.db import Connector
+from pydantic import BaseModel
+
+class Book(BaseModel):
+    id : int
+    title: str
+    author_id: int
+    genre : str
+    class Config:
+        orm_mode = True
+class Author(BaseModel):
+    id : int
+    name : str | None = None
 #Instaciate the app
 app = FastAPI()
 # #Create the connection to the database
