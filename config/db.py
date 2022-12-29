@@ -2,17 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import mysql.connector
-#URL for the database connection
-SQLALCHEMY_DATABASE_URL = "mysql://root:micolash12@localhost:3306/bookstore"
-#Create the engine, with this we can connect
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={}
-)
-#
-#Each instance of the SessionLocal class will be a database session. The class itself is not a database session yet.
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
 #Old connector support
 class Connector(object):
   #Create a constructor
@@ -48,3 +38,8 @@ class Connector(object):
     self.cursor.close()
     if(False == self.cursor):
       print("Closed successfully!")
+#Instance the class
+# db = Connector("bookstore","localhost","root","micolash12",3306)
+# db.connect()
+# db.execute("select * from book limit 1")
+# print(db.fetchall())
