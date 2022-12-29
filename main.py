@@ -23,13 +23,12 @@ async def books():
    conn.execute("select * from book limit 10;") ##### Modificar esta query
    res = conn.fetchall()
    return res 
-@app.route('/book/{author_id}')
-async def book_by_author(author_id:int):
-    print(author_id)
-    conn.execute(f"select * from book where author_id = {author_id} ;") ##### Modificar esta query
-    rs = conn.fetall()
+@app.get('/author/{author_id}')
+async def book_by_author( author_id : str ):
+    conn.execute(f"select * from book where id_author = {author_id} ;") ##### Modificar esta query
+    rs = conn.fetchall()
     return rs
-@app.get("/countries/test")
+@app.get("/test")
 def test_hi():
    response = ('the API works!', 200)
    return response
