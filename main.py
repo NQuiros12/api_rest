@@ -23,9 +23,12 @@ async def books():
    conn.execute("select * from book limit 10;") ##### Modificar esta query
    res = conn.fetchall()
    return res 
-@app.get('/author/{author_id}')
-async def book_by_author( author_id : str ):
-    conn.execute(f"select * from book where id_author = {author_id} ;") ##### Modificar esta query
+@app.get('/author/{lastname}')
+async def book_by_author( lastname : str ):
+    conn.execute(f"select id_author from author where last_name = '{lastname}';")
+    author_id = conn.fetchone()
+    #print(author_id)
+    conn.execute(f"select * from book where id_author = {author_id[0]} ;") ##### Modificar esta query
     rs = conn.fetchall()
     return rs
 @app.get("/test")
