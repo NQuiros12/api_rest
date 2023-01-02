@@ -24,6 +24,7 @@ class Connector(object):
     self.cursor = self.conn.cursor()
     if(self.cursor):
       print("Connected successfully!")
+      
   #Execute a query in the database
   def execute(self, query):
     self.cursor.execute(query)
@@ -38,6 +39,24 @@ class Connector(object):
     self.cursor.close()
     if(False == self.cursor):
       print("Closed successfully!")
+  def create_post(self,title: str, content: str) -> None:
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='mydatabase',
+                                            user='user',
+                                            password='password')
+        cursor = connection.cursor()
+        insert_query = "INSERT INTO posts (title, content) VALUES (%s, %s)"
+        cursor.execute(insert_query, (title, content))
+        connection.commit()
+        print(cursor.rowcount, "Record inserted successfully into posts table")
+    except Error as error:
+        print("Error:", error)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
 #Instance the class
 # db = Connector("bookstore","localhost","root","micolash12",3306)
 # db.connect()
