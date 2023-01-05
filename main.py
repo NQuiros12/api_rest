@@ -35,9 +35,10 @@ async def books():
 @app.get('/books_genre/{genre}')
 async def books_genre(genre : str):
     genre = genre.lower()
-    print(genre)
-    conn.execute("select * from book where genre = '{genre}' limit 5;") 
+    conn.execute(f"select * from book where genre = '{genre}' limit 5;") 
     res = conn.fetchall()
+    if len(res) == 0:
+        return {"message": f"No books were found for '{genre}'"}
     return res 
 
 @app.get('/authors')

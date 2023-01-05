@@ -27,7 +27,10 @@ class Connector(object):
       
   #Execute a query in the database
   def execute(self, query):
-    self.cursor.execute(query)
+    try:
+      self.cursor.execute(query)
+    except mysql.connector.Error as e:
+      print("Error reading data from MySQL table", e)
   #Fetch the result but only return the first result
   def fetchone(self):
     return self.cursor.fetchone()
