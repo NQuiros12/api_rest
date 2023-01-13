@@ -75,7 +75,12 @@ async def add_book(book : Book):
     conn.conn.commit()
     conn.close()
     return {"message": "Book created successfully"}
-
+@app.delete("/book/{title}")
+async def delete_book(title:str):
+    conn.execute(f"delete from book where title = {title};")
+    conn.conn.commit()
+    conn.close()
+    return {"message": "Book deleted successfully"}
 @app.get("/",response_class=HTMLResponse)
 def test_hi():
    return FileResponse("template/index.html")
