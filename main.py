@@ -61,26 +61,36 @@ async def books_by_author_lastname( last_name : str ):
 @app.post("/author/")
 async def add_author(author:Author):
     id = rows_count("author") + 1
-    conn.execute(f"insert into author values('{author.name}','{author.last_name}',{id})")
-    conn.conn.commit()
-    conn.close()
-    return {"message": "Author created successfully"}
+    try:
+        conn.execute(f"insert into author values('{author.name}','{author.last_name}',{id})")
+        conn.conn.commit()
+        conn.close()
+        return {"message": "Author created successfully"}
+    except:
+        conn.rollback()
 @app.post('/book/')
 async def add_book(book : Book):
-    conn.execute(f"""insert into book(title,genre,height,publisher,id_author) values('{book.title}',
-                                                                        '{book.genre.capitalize()}',
-                                                                        {book.height},
-                                                                        '{book.publisher}',
-                                                                        {book.author_id})""")
-    conn.conn.commit()
-    conn.close()
-    return {"message": "Book created successfully"}
+    try:
+        conn.execute(f"""insert into book(title,genre,height,publisher,id_author) values('{book.title}',
+                                                                            '{book.genre.capitalize()}',
+                                                                            {book.height},
+                                                                            '{book.publisher}',
+                                                                            {book.author_id})""")
+        conn.conn.commit()
+        conn.close()
+        return {"message": "Book created successfully"}
+    except:
+        conn.rollback()
 @app.delete("/book/{title}")
 async def delete_book(title:str):
-    conn.execute(f"delete from book where title = {title};")
-    conn.conn.commit()
-    conn.close()
-    return {"message": "Book deleted successfully"}
+    try:
+        conn.execute(f"delete from book where title = '{title}';")
+        conn.conn.commit()
+        conn.close()
+        return {"message": "Book deleted successfully"}
+    except:
+        conn.rollback()
+    
 @app.get("/",response_class=HTMLResponse)
 def test_hi():
    return FileResponse("template/index.html")
