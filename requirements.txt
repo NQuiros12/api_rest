@@ -1,5 +1,5 @@
-flask
 pandas
+seaborn
 mysql-connector-python
 fastapi
 uvicorn[standard]

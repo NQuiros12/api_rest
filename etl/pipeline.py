@@ -3,8 +3,8 @@ import pandas as pd
 import seaborn as sns
 import re
 import numpy as np
-
-file = "../data/books.csv"
+import os
+file = "etl/data/books.csv"
 rd = pd.read_csv(file)
 ##This function is used to correct the error in the titles of books
 def reverse_title(title):
@@ -30,7 +30,13 @@ author_tosql = author_df.drop(columns="author")
 author_df["id_author"] = author_df.index
 author_tosql["id_author"] = author_tosql.index
 # Create the database connection
-engine = create_engine('mysql+pymysql://root:micolash12@localhost/bookstore')
+DB_USER ="root"
+DB_PASSWORD = "micolash12"
+DB_HOST = "mysql-db"
+DATABASE ="bookstore"
+DB_PORT = "3306"
+connect_string = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DATABASE}?charset=utf8'
+engine = create_engine(connect_string)
 # Use the built-in function 'to_sql' to write the dataframe to the database
 author_tosql.to_sql('author', engine, if_exists='replace', index=False)
 
