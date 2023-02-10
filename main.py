@@ -1,14 +1,14 @@
 # uvicorn main:app --reload
 from fastapi import FastAPI
+from config.db import Connector
 from fastapi.responses import HTMLResponse
-from .logic import rows_count, read_books, book_by_genre, read_authors, author_by_name, book_by_lastname, add_author, add_book, delete_author_by_id, delete_book,delete_author_by_lastname
-from .models.author import Author, Book
+from logic import rows_count, read_books, book_by_genre, read_authors, author_by_name, book_by_lastname, add_author, add_book, delete_author_by_id, delete_book,delete_author_by_lastname
+from models.author import Author
+from models.book import Book
 from starlette.responses import FileResponse
 
 # Instaciate the app
 app = FastAPI()
-# This gets the first 10 books.
-
 
 @app.get('/books')
 async def books():

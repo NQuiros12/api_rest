@@ -1,8 +1,8 @@
 from config.db import Connector
-from .models.author import Author
-from .models.book import Book
+from models.author import Author
+from models.book import Book
 # #Create the connection to the database
-conn = Connector("bookstore", "mysq-db", "root", "micolash12", 3306)
+conn = Connector("bookstore", "localhost", "root", "micolash12", 3306)
 conn.connect()
 # This function tell the number of rows in the table, this is much needed in the different endpoints of this API
 

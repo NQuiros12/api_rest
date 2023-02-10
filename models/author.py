@@ -1,10 +1,8 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-
-from config.db import Base
-class Author(Base):
+from pydantic import BaseModel
+class Author(BaseModel):
     __tablename__ = "author"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    books = relationship("Book", back_populates="author")
+    id:int = Column(Integer, primary_key=True, index=True)
+    name:str = Column(String)
+    books:list = relationship("Book", back_populates="author")
