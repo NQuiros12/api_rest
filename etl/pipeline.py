@@ -32,7 +32,7 @@ author_tosql["id_author"] = author_tosql.index
 # Create the database connection
 DB_USER ="root"
 DB_PASSWORD = "micolash12"
-DB_HOST = "mysql-db"
+DB_HOST = "localhost"
 DATABASE ="bookstore"
 DB_PORT = "3306"
 connect_string = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DATABASE}?charset=utf8'
