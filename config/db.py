@@ -19,13 +19,14 @@ class Connector(object):
     def connect(self):
         try:
             self.conn = mysql.connector.connect(
-                host=self.host,
-                user=self.user,
-                password=self.password,
-                database=self.database,
-                port=self.port
+                host = self.host,
+                user = self.user,
+                password = self.password,
+                database = self.database,
+                port = self.port
             )
             self.cursor = self.conn.cursor()
+
             if (self.cursor):
                 print("Connected successfully!")
         except mysql.connector.Error as error:
@@ -38,6 +39,8 @@ class Connector(object):
             self.cursor.execute(query)
         except mysql.connector.Error as e:
             print("Error: ", e)
+        finally:
+            self.conn.close()
     # Fetch the result but only return the first result
 
     def fetchone(self):
@@ -52,25 +55,6 @@ class Connector(object):
         self.cursor.close()
         if (False == self.cursor):
             print("Closed successfully!")
-
-    def insert_book(self, title: str, content: str) -> None:
-        try:
-            connection = mysql.connector.connect(host='localhost',
-                                                 database='mydatabase',
-                                                 user='user',
-                                                 password='password')
-            cursor = connection.cursor()
-            insert_query = "INSERT INTO posts (title, content) VALUES (%s, %s)"
-            cursor.execute(insert_query, (title, content))
-            connection.commit()
-            print(cursor.rowcount, "Record inserted successfully into posts table")
-        except mysql.connector.Error as error:
-            print("Error:", error)
-        finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
-                print("MySQL connection is closed")
 # Instance the class
 # db = Connector("bookstore","localhost","root","micolash12",3306)
 # db.connect()
