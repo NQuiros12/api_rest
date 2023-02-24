@@ -1,62 +1,67 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 import mysql.connector
+import logging
+from mysql.connector.pooling import MySQLConnectionPool
 
-# Old connector support
+# Create a logger instance
+logger = logging.getLogger(__name__)
 
+# Configure the logger
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s [%(levelname)s]: %(message)s")
+file_handler = logging.FileHandler("log_db.txt")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 class Connector(object):
     # Create a constructor
-    def __init__(self, database: str, host: str, user: str, password: str, port: int):
+    def __init__(self, database: str, host: str, user: str, password: str, port: int, pool_size: int = 5):
         self.database = database
         self.host = host
         self.user = user
         self.password = password
         self.port = port
-    # Create a method to connect to the database
+        self.pool = MySQLConnectionPool(pool_size=pool_size, pool_name="mypool",
+                                         host=self.host, database=self.database,
+                                         user=self.user, password=self.password, port=self.port)
 
-    def connect(self):
+    # Get a connection from the pool
+    def get_connection(self):
         try:
-            self.conn = mysql.connector.connect(
-                host = self.host,
-                user = self.user,
-                password = self.password,
-                database = self.database,
-                port = self.port
-            )
-            self.cursor = self.conn.cursor()
-
-            if (self.cursor):
-                print("Connected successfully!")
+            conn = self.pool.get_connection()
+            logger.info(f"Got connection from pool: {conn}")
+            return conn
         except mysql.connector.Error as error:
-            print("Error:", error)
+            logger.error(f"Error getting connection from pool: {error}")
+            raise
 
     # Execute a query in the database
-
     def execute(self, query):
         try:
-            self.cursor.execute(query)
-        except mysql.connector.Error as e:
-            print("Error: ", e)
-        finally:
-            self.conn.close()
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(query)
+            logger.info(f"Executed query: {query}")
+            self.cursor = cursor
+            self.conn = conn
+            return cursor
+        except mysql.connector.Error as error:
+            logger.error(f"Error executing query: {query}. Error message: {error}")
+            raise
+
     # Fetch the result but only return the first result
-
     def fetchone(self):
-        return self.cursor.fetchone()
+        result = self.cursor.fetchone()
+        logger.debug(f"Fetched one result: {result}")
+        return result
+
     # Fetch the result and return all the set.
-
     def fetchall(self):
-        return self.cursor.fetchall()
-    # Close the db connection.
+        result = self.cursor.fetchall()
+        logger.debug(f"Fetched all results: {result}")
+        return result
 
+    # Close the db connection.
     def close(self):
-        self.cursor.close()
-        if (False == self.cursor):
-            print("Closed successfully!")
-# Instance the class
-# db = Connector("bookstore","localhost","root","micolash12",3306)
-# db.connect()
-# db.execute("select * from book limit 1")
-# print(db.fetchall())
+        self.conn.close()
+        if not self.conn:
+            logger.info("Closed successfully!")
