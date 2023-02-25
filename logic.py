@@ -33,7 +33,7 @@ def read_books():
 
 def book_by_genre(genre: str):
     genre = genre.lower()
-    conn.execute("select * from book where genre = '%s' limit 5;", (genre))
+    conn.execute("select * from book where genre = '%s' limit 5;" % (genre))
     res = conn.fetchall()
     if len(res) == 0:
         return {"message": f"No books were found for '{genre}'"}
@@ -47,14 +47,14 @@ def read_authors():
 
 
 def author_by_name(name: str):
-    conn.execute("select * from author where name = '%s';")
+    conn.execute("select * from author where name = '%s';" % name)
     res = conn.fetchall()
     return res
 
 
 def book_by_lastname(last_name: str):
     conn.execute(
-        "select id_author from author where last_name = '%s';", (last_name))
+        "select id_author from author where last_name = '%s';" % (last_name))
     author_id = conn.fetchone()
     conn.execute(f"select * from book where id_author = {author_id[0]} ;")
     rs = conn.fetchall()
@@ -65,7 +65,7 @@ def add_author(author: Author):
     id = rows_count("author") + 1
     try:
         conn.execute(
-            "insert into author values (%s, %s, %s)",
+            "insert into author values (%s, %s, %s)" %
             (author.name, author.last_name, id)
         )
         conn.conn.commit()
@@ -80,11 +80,14 @@ def add_author(author: Author):
 
 def add_book(book: Book):
     try:
-        conn.execute(f"""insert into book(title,genre,height,publisher,id_author) values('{book.title}',
-                                                                            '{book.genre.capitalize()}',
-                                                                            {book.height},
-                                                                            '{book.publisher}',
-                                                                            {book.author_id})""")
+        conn.execute("""insert into book(title,genre,height,publisher,id_author) values('%sbook.title}',
+                                                                            '%sbook.genre.capitalize()}',
+                                                                            %sbook.height},
+                                                                            '%sbook.publisher}',
+                                                                            %sbook.author_id})""" % (book.title, 
+                                                                                                     book.genre,
+                                                                                                     book.publisher,
+                                                                                                     book.id))
         conn.conn.commit()
         conn.close()
         logger.info("Book created successfully")
@@ -96,7 +99,7 @@ def add_book(book: Book):
 def delete_book(title: str):
     try:
         # Esto podria hacerse tal vez mas
-        conn.execute("delete from book where title = '%s';",(title))
+        conn.execute("delete from book where title = '%s';" % (title))
         # eficiente si usaramos el id como parametro para filtrar.
         conn.conn.commit()
         conn.close()
@@ -109,7 +112,7 @@ def delete_book(title: str):
 def delete_author_by_lastname(last_name: str):
     try:
         # Esto podria hacerse tal vez mas
-        conn.execute("delete from author where last_name = '%s';",(last_name))
+        conn.execute("delete from author where last_name = '%s';" % (last_name))
         # eficiente si usaramos el id como parametro para filtrar.
         conn.conn.commit()
         conn.close()
@@ -122,7 +125,8 @@ def delete_author_by_lastname(last_name: str):
 def delete_author_by_id(id: int):
     try:
         # Esto podria hacerse tal vez mas
-        conn.execute("delete from author where id = %s;", (id,))        # eficiente si usaramos el id como parametro para filtrar.
+        # eficiente si usaramos el id como parametro para filtrar.
+        conn.execute("delete from author where id = %s;"% (id,))
         conn.conn.commit()
         conn.close()
         logger.info("Author deleted by id successfully")
