@@ -50,6 +50,7 @@ function getBooksJSON() {
                     if (txtSearch.value && txtSearch.value != "") {
                         urlServer = 'http://localhost:8000/books_genre/' + txtSearch.value;
                     }
+                    console.log(txtSearch);
                     return [4 /*yield*/, fetch(urlServer, {
                             method: 'GET',
                             headers: {
@@ -71,7 +72,7 @@ function getBooksJSON() {
                         grillaHTML += '<div class="row">';
                         grillaHTML += '<div class="col">' + book.id + '</div>';
                         grillaHTML += '<div class="col">' + book.title + '</div>';
-                        grillaHTML += '<div class="col">' + book.height.toString() + '</div>';
+                        grillaHTML += '<div class="col">' + book.height + '</div>';
                         grillaHTML += '<div class="col">' + book.publisher + '</div>';
                         grillaHTML += '<div class="col">' + book.author_id + '</div>';
                         //grillaHTML += '<div class="col" onclick="editarArticulo('+art.id+')" style="cursor:pointer; color:green">Editar</div>';
@@ -79,7 +80,7 @@ function getBooksJSON() {
                         grillaHTML += '</div>';
                     }
                     ;
-                    divArt = document.getElementById("listaArticulos");
+                    divArt = document.getElementById("listaBooks");
                     if (divArt) {
                         divArt.innerHTML = grillaHTML;
                     }

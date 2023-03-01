@@ -13,6 +13,7 @@ async function getBooksJSON(){
     if(txtSearch.value && txtSearch.value != ""){
         urlServer = 'http://localhost:8000/books_genre/' + txtSearch.value;
     }
+    console.log(txtSearch);
     //API request
 	let response = await fetch(urlServer, {
 		method: 'GET',
@@ -30,14 +31,14 @@ async function getBooksJSON(){
         grillaHTML += '<div class="row">';
         grillaHTML += '<div class="col">' + book.id + '</div>';
         grillaHTML += '<div class="col">' + book.title + '</div>';
-        grillaHTML += '<div class="col">' + book.height .toString() + '</div>';
+        grillaHTML += '<div class="col">' + book.height + '</div>';
         grillaHTML += '<div class="col">' + book.publisher+ '</div>';
         grillaHTML += '<div class="col">' + book.author_id + '</div>';
         //grillaHTML += '<div class="col" onclick="editarArticulo('+art.id+')" style="cursor:pointer; color:green">Editar</div>';
         //grillaHTML += '<div class="col" onclick="eliminarArticulo('+art.id+')" style="cursor:pointer; color:red">Eliminar</div>';
         grillaHTML += '</div>';
     };
-    var divArt = document.getElementById("listaArticulos");
+    var divArt = document.getElementById("listaBooks");
     if(divArt)  {
         divArt.innerHTML  = grillaHTML;
     }

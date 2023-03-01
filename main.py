@@ -6,9 +6,18 @@ from logic import rows_count, read_books, book_by_genre, read_authors, author_by
 from models.author import Author
 from models.book import Book
 from starlette.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
-# Instaciate the app
 app = FastAPI()
+
+# configure CORS middleware
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["GET"],
+    allow_headers=["*"]  # or specific headers that your client may send
+)
 
 @app.get('/books')
 async def books():
