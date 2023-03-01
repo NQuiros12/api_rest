@@ -41,34 +41,50 @@ var Book = /** @class */ (function () {
 }());
 function getBooksJSON() {
     return __awaiter(this, void 0, void 0, function () {
-        var urlServer, txtSearch, response, books, grillaHTML, _i, books_1, book, divArt;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var urlServer, txtSearch, headers, requestInit, response, books, booksArray, _i, books_1, book, bookObj, grillaHTML, _a, booksArray_1, book, divArt;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     urlServer = 'http://localhost:8000/books';
                     txtSearch = document.getElementById("genreBox");
                     if (txtSearch.value && txtSearch.value != "") {
                         urlServer = 'http://localhost:8000/books_genre/' + txtSearch.value;
                     }
-                    console.log(txtSearch);
-                    return [4 /*yield*/, fetch(urlServer, {
-                            method: 'GET',
-                            headers: {
-                                'Content-type': 'application/json',
-                                'Access-Control-Allow-Origin': '*'
-                            },
-                            mode: 'cors'
-                        })];
+                    headers = new Headers();
+                    headers.append('Content-Type', 'application/json');
+                    headers.append('Access-Control-Allow-Origin', '*');
+                    requestInit = {
+                        method: 'GET',
+                        headers: headers,
+                        mode: 'cors'
+                    };
+                    return [4 /*yield*/, fetch(urlServer, requestInit)];
                 case 1:
-                    response = _a.sent();
-                    console.log(response);
+                    response = _b.sent();
+                    if (!(response.status === 200 || response.status === 304)) return [3 /*break*/, 3];
                     return [4 /*yield*/, response.json()];
                 case 2:
-                    books = _a.sent();
-                    grillaHTML = "";
-                    grillaHTML = getHeader(grillaHTML);
+                    books = _b.sent();
+                    booksArray = [];
                     for (_i = 0, books_1 = books; _i < books_1.length; _i++) {
                         book = books_1[_i];
+                        bookObj = {
+                            id: book[0],
+                            title: book[1],
+                            genre: book[2],
+                            height: book[3],
+                            publisher: book[4],
+                            author_id: book[5]
+                        };
+                        booksArray.push(bookObj);
+                    }
+                    console.log(booksArray);
+                    grillaHTML = "";
+                    grillaHTML = getHeader(grillaHTML);
+                    grillaHTML += '<div class="table">';
+                    for (_a = 0, booksArray_1 = booksArray; _a < booksArray_1.length; _a++) {
+                        book = booksArray_1[_a];
+                        console.log(book.id, book.title, book.height, book.publisher, book.author_id);
                         grillaHTML += '<div class="row">';
                         grillaHTML += '<div class="col">' + book.id + '</div>';
                         grillaHTML += '<div class="col">' + book.title + '</div>';
@@ -80,11 +96,16 @@ function getBooksJSON() {
                         grillaHTML += '</div>';
                     }
                     ;
-                    divArt = document.getElementById("listaBooks");
+                    grillaHTML += '</div>';
+                    divArt = document.getElementById("listBooks");
                     if (divArt) {
                         divArt.innerHTML = grillaHTML;
                     }
-                    return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 3:
+                    console.log("Error: " + response.statusText);
+                    _b.label = 4;
+                case 4: return [2 /*return*/];
             }
         });
     });
