@@ -1,5 +1,5 @@
-etl/source/
-etl/raw/
+etl/source/*.zip
+etl/raw/**/*.csv
 log_db.txt
 log_logic.txt
 node_modules
