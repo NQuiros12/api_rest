@@ -10,7 +10,7 @@ class TestReadBooks(unittest.TestCase):
 
         # Use the patch decorator to replace the database connection in the
         # my_module module with the mock connection
-        with patch("logic.conn", conn):
+        with open("logic.conn", conn):
             # Call the read_books function
             result = logic.read_books()
 

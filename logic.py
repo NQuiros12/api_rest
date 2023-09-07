@@ -1,4 +1,4 @@
-from config.db import Connector
+from etl.common.db import Connector
 from models.author import Author
 from models.book import Book
 import logging
@@ -14,7 +14,8 @@ file_handler = logging.FileHandler("log_logic.txt")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 # #Create the connection to the database
-conn = Connector("bookstore", "localhost", "root", "micolash12", 3306)
+
+conn = Connector()
 conn.get_connection()
 # This function tell the number of rows in the table,
 #  this is much needed in the different endpoints of this API
