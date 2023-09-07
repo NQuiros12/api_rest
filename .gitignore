@@ -1,4 +1,5 @@
-data/books_data/
+etl/source/
+etl/raw/
 log_db.txt
 log_logic.txt
 node_modules
