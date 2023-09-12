@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, declarative_base
 import re
 import csv
 # Create the database connection
@@ -27,3 +28,5 @@ file = "etl/data/books.csv"
 
 connect_string = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DATABASE}?charset=utf8'
 engine = create_engine(connect_string)
+session = Session(engine)
+Base = declarative_base()
