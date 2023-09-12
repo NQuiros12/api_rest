@@ -7,24 +7,22 @@ import configparser
 
 # Read the config file
 config = configparser.ConfigParser()
-config.read('database.ini')
+config.read('common/database.ini')
 
 # Get the database host
-DB_HOST = config['database']['host']
+DB_HOST = config['mysql_local']['host']
 
 # Get the database port
-DB_PORT = config['database']['port']
+DB_PORT = config['mysql_local']['port']
 
 # Get the database name
-DATABASE = config['database']['database']
+DATABASE = config['mysql_local']['database']
 
 # Get the database user
-DB_USER = config['database']['user']
+DB_USER = config['mysql_local']['user']
 
 # Get the database password
-DB_PASSWORD = config['database']['password']
-
-file = "etl/data/books.csv"
+DB_PASSWORD = config['mysql_local']['password']
 
 connect_string = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DATABASE}?charset=utf8'
 engine = create_engine(connect_string)

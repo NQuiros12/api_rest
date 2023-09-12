@@ -1,18 +1,18 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer,String
-
+from sqlalchemy import Column, Integer,String,ForeignKey
+from common.base import engine
 
 Base = declarative_base()
 
 class Rating(Base):
     __tablename__ = "ratings"
-    
-    user_id = Column(Integer, primary_key=True)
-    ISBN = Column(String(255))
+    rating_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.user_id"))
+    ISBN = Column(String(255),ForeignKey("books.ISBN"))
     book_rating = Column(Integer)
 
 class Book(Base):
-    ___table__ = "books"
+    __tablename__ = "books"
 
     ISBN = Column(String(255),primary_key=True)
     book_title =  Column(String(255))
@@ -26,7 +26,6 @@ class User(Base):
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True)
-    city = Column(String(255))
-    state = Column(String(255))
-    country = Column(String(255))
-    age = Column(Integer)   
+    location = Column(String(255))
+    age = Column(Integer)
+Base.metadata.create_all(engine)
