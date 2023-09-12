@@ -1,9 +1,12 @@
 annotated-types==0.5.0
 anyio==3.7.1
+cffi==1.15.1
+cryptography==41.0.3
 fastapi==0.103.1
 idna==3.4
 mysql-connector-python==8.1.0
 protobuf==4.21.12
+pycparser==2.21
 pydantic==2.3.0
 pydantic_core==2.6.3
 PyMySQL==1.1.0
