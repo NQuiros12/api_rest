@@ -5,3 +5,4 @@ log_logic.txt
 node_modules
 *database.ini*
 fa_env
+*DS_Store*
